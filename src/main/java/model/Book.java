@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 /**
@@ -20,8 +21,8 @@ import lombok.ToString;
 @Getter
 public class Book {
 
-    private final String isbn = null;
-    private final String title = null;
+    private String isbn = null;
+    private String title = null;
     private String author;
     private int edition;
     private int publishedyear;
