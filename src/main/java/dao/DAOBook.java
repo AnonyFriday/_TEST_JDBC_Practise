@@ -129,7 +129,32 @@ public class DAOBook implements DAOInterface<Book> {
 
     @Override
     public int delete(Book t) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        // No of rows affected by the sql statement
+        int results = 0;
+
+        try {
+            // Step 1
+            Connection conn = DBUtils.connectSQLServer();
+
+            // Step 2 + 3
+            String sql = """
+                         delete from Book
+                         where Isbn=?
+                         """;
+            PreparedStatement pSt = conn.prepareStatement(sql);
+
+            // Step 4
+            pSt.setString(1, t.getIsbn());
+            results = pSt.executeUpdate();
+
+            // Step 5
+            DBUtils.closeConnectionSQLServer(conn);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOBook.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return results;
     }
 
     @Override
@@ -180,11 +205,6 @@ public class DAOBook implements DAOInterface<Book> {
         }
 
         return results;
-    }
-
-    @Override
-    public Book selectById() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override

@@ -17,11 +17,31 @@ public class TestDAOBook {
         /**
          * Test Insertion
          */
-        Book book = new Book("123123123129",
-                "No else i can bibibbim",
-                "Dr Frog", 9, 2020);
-        int isInserted = DAOBook.getInstance().insertStatement(book);
-        System.out.println("Row inserted: " + isInserted);
+        new Thread(() -> {
+            Book book = new Book("123123123128",
+                    "No else i can bibibbim",
+                    "Dr Frog", 9, 2020);
+            int noInserted = DAOBook.getInstance().insertStatement(book);
+            System.out.println("Row inserted: " + noInserted);
+        }).start();
+
+        /**
+         * Test Insertion using prepared statement
+         */
+        Book book1 = new Book("098098098092",
+                "What in the hell is that",
+                "Midjourney",
+                9, 2012);
+        int noInserted1 = DAOBook.getInstance().insertPreparedStatement(book1);
+        System.out.println("Row inserted: " + noInserted1);
+
+        /**
+         * Test Deletion using PreparedStatement
+         */
+        new Thread(() -> {
+            int noDeleted = DAOBook.getInstance().delete(new Book("123123123128"));
+            System.out.println("Row deleted: " + noDeleted);
+        }).start();
 
         /**
          * Test Selection

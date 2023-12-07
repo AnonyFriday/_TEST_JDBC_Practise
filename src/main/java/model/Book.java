@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 /**
@@ -17,12 +18,15 @@ import lombok.ToString;
  */
 @NoArgsConstructor
 @AllArgsConstructor
+@RequiredArgsConstructor        // Create the constructor for final fields and @Non-null
 @ToString(includeFieldNames = true)
 @Getter
+@Setter
 public class Book {
 
-    private String isbn = null;
-    private String title = null;
+    @NonNull
+    private String isbn;
+    private String title;
     private String author;
     private int edition;
     private int publishedyear;
