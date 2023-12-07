@@ -12,7 +12,9 @@ import java.util.ArrayList;
  */
 public interface DAOInterface<T> {
 
-    public int insert(T t);
+    public int insertStatement(T t);
+
+    public int insertPreparedStatement(T t);
 
     public int delete(T t);
 

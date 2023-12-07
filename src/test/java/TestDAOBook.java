@@ -20,7 +20,7 @@ public class TestDAOBook {
         Book book = new Book("123123123129",
                 "No else i can bibibbim",
                 "Dr Frog", 9, 2020);
-        int isInserted = DAOBook.getInstance().insert(book);
+        int isInserted = DAOBook.getInstance().insertStatement(book);
         System.out.println("Row inserted: " + isInserted);
 
         /**

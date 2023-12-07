@@ -14,7 +14,7 @@ import model.Customer;
 public class DAOCustomer implements DAOInterface<Customer> {
 
     @Override
-    public int insert(Customer t) {
+    public int insertStatement(Customer t) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
@@ -40,6 +40,11 @@ public class DAOCustomer implements DAOInterface<Customer> {
 
     @Override
     public Customer selectByCondition(String condition) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public int insertPreparedStatement(Customer t) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

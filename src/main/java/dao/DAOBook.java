@@ -6,6 +6,7 @@ package dao;
 
 import database.DBUtils;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -48,19 +49,20 @@ public class DAOBook implements DAOInterface<Book> {
     // == Override Methods from DAOInterface
     // =====================================
     /**
-     * Insert a new book to the database using prepared statement
+     * Insert a new book to the database using statement
      * 5 Steps
      * - Connect to database
-     * - Create the statement instance
-     * - Create the sql query
-     * - Create the
+     * - Create the statement instance, ResultSet instance
+     * - Create the sql query and execute the query
+     * - Create the manipulating the returned values
+     * - Close the connection
      *
      * @param t: a new book
      *
      * @return the row count affected
      */
     @Override
-    public int insert(Book t) {
+    public int insertStatement(Book t) {
         int isInserted = 0;
         try {
             Connection conn = DBUtils.connectSQLServer();
@@ -81,6 +83,48 @@ public class DAOBook implements DAOInterface<Book> {
             ex.printStackTrace();
         }
         return isInserted;
+    }
+
+    /**
+     * Insert a new book to the database using prepared statement
+     *
+     * @param t
+     *
+     * @return
+     */
+    @Override
+    public int insertPreparedStatement(Book t) {
+
+        // No of rows affected by the sql statement
+        int results = 0;
+
+        try {
+            // Step 1
+            Connection conn = DBUtils.connectSQLServer();
+
+            // Step 2 + 3
+            String sql = """
+                                 insert into Book
+                                 values (?, ?, ?, ?, ?)
+                                 """;
+            PreparedStatement pSt = conn.prepareStatement(sql);
+
+            // Step 4
+            pSt.setString(1, t.getIsbn());
+            pSt.setString(2, t.getTitle());
+            pSt.setString(3, t.getAuthor());
+            pSt.setInt(4, t.getEdition());
+            pSt.setInt(5, t.getPublishedyear());
+            results = pSt.executeUpdate();
+
+            // Step 5
+            DBUtils.closeConnectionSQLServer(conn);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOBook.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return results;
     }
 
     @Override
@@ -127,7 +171,7 @@ public class DAOBook implements DAOInterface<Book> {
                 // Adding to the results
                 results.add(new Book(isbn, title, author, edition, publishedYear));
             }
-            
+
             // Step 5
             DBUtils.closeConnectionSQLServer(conn);
 
@@ -147,4 +191,5 @@ public class DAOBook implements DAOInterface<Book> {
     public Book selectByCondition(String condition) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
 }
