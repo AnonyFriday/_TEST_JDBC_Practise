@@ -13,10 +13,21 @@ import model.Book;
 public class TestDAOBook {
 
     public static void main(String[] args) {
-        Book book = new Book("123123123123",
-                "No else i can fly",
-                "Dr Frog", 5, 2004);
+
+        /**
+         * Test Insertion
+         */
+        Book book = new Book("123123123129",
+                "No else i can bibibbim",
+                "Dr Frog", 9, 2020);
         int isInserted = DAOBook.getInstance().insert(book);
         System.out.println("Row inserted: " + isInserted);
+
+        /**
+         * Test Selection
+         */
+        for (Book b : DAOBook.getInstance().selectAll()) {
+            System.out.println(b.toString());
+        }
     }
 }

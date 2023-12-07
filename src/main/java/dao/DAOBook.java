@@ -6,6 +6,7 @@ package dao;
 
 import database.DBUtils;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -46,6 +47,18 @@ public class DAOBook implements DAOInterface<Book> {
     // =====================================
     // == Override Methods from DAOInterface
     // =====================================
+    /**
+     * Insert a new book to the database using prepared statement
+     * 5 Steps
+     * - Connect to database
+     * - Create the statement instance
+     * - Create the sql query
+     * - Create the
+     *
+     * @param t: a new book
+     *
+     * @return the row count affected
+     */
     @Override
     public int insert(Book t) {
         int isInserted = 0;
@@ -80,9 +93,49 @@ public class DAOBook implements DAOInterface<Book> {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
+    /**
+     * Select every records from the table
+     *
+     * @return
+     */
     @Override
     public ArrayList<Book> selectAll() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        ArrayList<Book> results = new ArrayList<>();
+        try {
+
+            // Step 1
+            Connection conn = DBUtils.connectSQLServer();
+
+            // Step 2
+            String sql = """
+                         select *
+                         from Book as b
+                         """;
+
+            // Step 3
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+
+            // Step 4
+            while (rs.next()) {
+                String isbn = rs.getString("Isbn");
+                String author = rs.getString("Author");
+                String title = rs.getString("Title");
+                int edition = rs.getInt("Edition");
+                int publishedYear = rs.getInt("PublishedYear");
+
+                // Adding to the results
+                results.add(new Book(isbn, title, author, edition, publishedYear));
+            }
+            
+            // Step 5
+            DBUtils.closeConnectionSQLServer(conn);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOBook.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return results;
     }
 
     @Override
